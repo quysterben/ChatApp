@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
@@ -7,7 +7,11 @@ import 'react-toastify/dist/ReactToastify.css';
 import styles from './Register.module.css'
 import { BsChatHeart } from "react-icons/bs";
 
+import { postDataAPI } from '../utils/fetchData';
+
 export default function Register() {
+    const navigate = useNavigate()
+
     const usernameData = useRef();
     const emailData = useRef();
     const passwordData = useRef();
@@ -21,16 +25,24 @@ export default function Register() {
         theme: 'dark'
     }
 
-    const handleSignupBtn = (e) => {
+    const handleSignupBtn = async (e) => {
         e.preventDefault();
         if (handleValidation()) {
-            const data = {
-                username: usernameData.current.value,
-                email: emailData.current.value,
-                password: passwordData.current.value,
-                repassword: rePasswordData.current.value
+            try {
+                const data = {
+                    username: usernameData.current.value,
+                    email: emailData.current.value,
+                    password: passwordData.current.value,
+                }
+                const res = await postDataAPI('auth/signup', { data });
+                localStorage.setItem('chat-app-user', JSON.stringify(res.result));
+                navigate('/');
+            } catch (err) {
+                toast.error(
+                    err.response.data.message,
+                    toastOptions
+                );
             }
-            console.log(data);
         }
     }
 
