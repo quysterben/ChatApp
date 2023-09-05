@@ -6,7 +6,6 @@ const db = require('../models/index');
 
 const authController = {
     signup: async (req, res, next) => {
-        console.log(req.body);
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             const err = new Error('Validation failed, entered data is incorrect!');
@@ -42,11 +41,50 @@ const authController = {
             }
             return next(err);
         }
+    },
+    signin: async (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            const err = new Error('Validation failed, entered data is incorrect.');
+            err.statusCode = 422;
+            err.data = errors.array();
+            return next(err);
+        }
+
+        const username = req.body.username;
+        const password = req.body.password;
+
+        try {
+            const user = await db.User.findOne({ username: username });
+            if (!user) {
+                const err = new Error('User not found.');
+                err.statusCode = 401;
+                throw err;
+            }
+
+            const isEqual = await bcryptjs.compare(password, user.password);
+            if (!isEqual) {
+                const err = new Error('Your password is not incorrect!');
+                err.statusCode = 401;
+                throw err;
+            }
+
+            return res.status(200).json({
+                success: true,
+                message: 'Login success!',
+                user: user,
+            });
+        } catch (err) {
+            if (!err.statusCode) {
+                err.statusCode = 500;
+            }
+            return next(err);
+        }
     }
 }
 
-const createAccessToken = (payload) => {
-    return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1d' });
-};
+// const createAccessToken = (payload) => {
+//     return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1d' });
+// };
 
 module.exports = authController;
