@@ -80,6 +80,27 @@ const authController = {
             }
             return next(err);
         }
+    },
+    setAvatar: async (req, res, next) => {
+        const userId = req.params.id;
+        const avatarImage = req.body.image;
+
+        try {
+            const user = await db.User.findByIdAndUpdate(userId, {
+                isAvatarImageSet: true,
+                avatarImage: avatarImage
+            })
+            return res.status(200).json({
+                success: true,
+                message: 'Set avatar success.',
+                image: avatarImage
+            });
+        } catch (err) {
+            if (!err.statusCode) {
+                err.statusCode = 500;
+            }
+            return next(err);
+        }
     }
 }
 
