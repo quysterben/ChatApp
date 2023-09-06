@@ -1,0 +1,112 @@
+.container {
+    display: grid;
+    grid-template-rows: 10% 75% 15%;
+    overflow: hidden;
+    background-color: beige;
+}
+
+.title {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    font-weight: bolder;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.icon {
+    margin-right: 8px;
+}
+
+.contacts {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: auto;
+    gap: 0.8rem;
+
+    &::-webkit-scrollbar {
+        width: 0.2rem;
+
+        &-thumb {
+            background-color: #ffffff39;
+            width: 0.1rem;
+            border-radius: 1rem;
+        }
+    }
+}
+
+.contact {
+    background-color: #cfcece57;
+    min-height: 5rem;
+    cursor: pointer;
+    width: 90%;
+    border-radius: 0.2rem;
+    padding: 0.4rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    transition: 0.5s ease-in-out;
+
+    .avatar {
+        height: 3rem;
+        width: 3rem;
+    }
+
+    .username {
+        h3 {
+            color: white;
+        }
+    }
+}
+
+.selectedContact {
+    background-color: #00000057;
+    min-height: 5rem;
+    cursor: pointer;
+    width: 90%;
+    border-radius: 0.2rem;
+    padding: 0.4rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    transition: 0.5s ease-in-out;
+
+    .avatar {
+        height: 3rem;
+        width: 3rem;
+    }
+
+    .username {
+        h3 {
+            color: white;
+        }
+    }
+}
+
+.currentUser {
+    background-color: #616161;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+
+    .avatar {
+        height: 3rem;
+        width: 3rem;
+    }
+
+    .username {
+        color: wheat;
+    }
+
+    @media screen and (min-width: 720px) and (max-width: 1080px) {
+        gap: 0.5rem;
+
+        .username {
+            h2 {
+                font-size: 1rem;
+            }
+        }
+    }
+}

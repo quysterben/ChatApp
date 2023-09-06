@@ -31,7 +31,7 @@ export default function SetAvatar() {
         if (!localStorage.getItem("chat-app-user")) {
             navigate('/login');
         }
-    }, [])
+    }, [navigate])
 
     const setProfileAvatar = async () => {
         if (selectedAvatar === undefined) {
