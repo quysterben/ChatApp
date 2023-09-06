@@ -1,0 +1,15 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: rgb(0, 0, 0);
+    flex-direction: column;
+
+    span {
+        color: #4e0eff;
+    }
+}
+
+.gif {
+    height: 20rem;
+}

@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 
 import { getDataAPI } from '../../utils/fetchData';
 import Contacts from '../../components/Contacts';
+import Welcome from '../../components/Welcome';
 
 export default function Chat() {
     const navigate = useNavigate();
@@ -44,6 +45,11 @@ export default function Chat() {
         <div className={styles.container}>
             <div className={styles.chatBox}>
                 <Contacts contacts={contacts} currentUser={currentUser} changeChat={handleChatChange} />
+                {currentChat === undefined ? (
+                    <Welcome />
+                ) : (
+                    <div>Chat</div>
+                )}
             </div>
         </div>
     )
