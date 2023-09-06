@@ -1,0 +1,70 @@
+.container {
+    background-color: #c2c2c2;
+    height: 100vh;
+    position: relative;
+}
+
+.form {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 1rem;
+}
+
+h2 {
+    font-weight: 800;
+    font-size: xx-large;
+    text-align: center;
+}
+
+.avatarsContainer {
+    margin-top: 4rem;
+    display: flex;
+    gap: 2rem;
+    width: 100%;
+    justify-content: center;
+}
+
+.avatar {
+    transition: 0.5s ease-in-out;
+    border: 0.4rem solid transparent;
+    border-radius: 5rem;
+    width: 6rem;
+    height: 6rem;
+}
+
+.selected {
+    border: 0.6rem solid wheat;
+    transition: 0.5s ease;
+    border-radius: 100%;
+    width: 6rem;
+    height: 6rem;
+}
+
+.btnContainer {
+    margin-top: 4rem;
+    display: flex;
+    justify-content: center;
+}
+
+button {
+    background-color: #e7e4ee;
+    color: black;
+    padding: 1rem;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 0.4rem;
+    font-size: 1rem;
+    text-transform: uppercase;
+
+    &:hover {
+        background-color: black;
+        color: white;
+    }
+}
+
+.loader {
+    max-inline-size: 6rem;
+}

@@ -36,7 +36,7 @@ export default function Register() {
                 }
                 const res = await postDataAPI('auth/signup', { data });
                 localStorage.setItem('chat-app-user', JSON.stringify(res.result));
-                navigate('/');
+                navigate('/set-avatar');
             } catch (err) {
                 toast.error(
                     err.response.data.message,

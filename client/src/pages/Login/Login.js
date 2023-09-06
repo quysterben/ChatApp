@@ -34,7 +34,7 @@ export default function Login() {
                 }
                 const res = await postDataAPI('auth/signin', { data });
                 localStorage.setItem('chat-app-user', JSON.stringify(res.user));
-                navigate('/');
+                navigate('/set-avatar');
             } catch (err) {
                 toast.error(
                     err.response.data.message,
