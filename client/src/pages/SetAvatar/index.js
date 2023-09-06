@@ -8,6 +8,8 @@ import axios from 'axios'
 import { Buffer } from 'buffer'
 import { ToastContainer, toast } from 'react-toastify'
 
+import { postDataAPI } from '../../utils/fetchData';
+
 export default function SetAvatar() {
     const api = "https://api.multiavatar.com/45678945";
 
@@ -25,6 +27,12 @@ export default function SetAvatar() {
         theme: 'dark'
     };
 
+    useEffect(() => {
+        if (!localStorage.getItem("chat-app-user")) {
+            navigate('/login');
+        }
+    }, [])
+
     const setProfileAvatar = async () => {
         if (selectedAvatar === undefined) {
             toast.error(
@@ -33,6 +41,23 @@ export default function SetAvatar() {
             );
         } else {
             const user = await JSON.parse(localStorage.getItem('chat-app-user'));
+            try {
+                const data = {
+                    image: avatars[selectedAvatar]
+                }
+                const res = await postDataAPI(`user/setAvatar/${user._id}`, { data })
+                if (res.success) {
+                    user.isAvatarImageSet = true;
+                    user.avatarImage = res.image;
+                    localStorage.setItem('chat-app-user', JSON.stringify(user));
+                    navigate('/');
+                }
+            } catch (err) {
+                toast.error(
+                    err.response.data.message,
+                    toastOptions
+                );
+            }
         }
     };
 
