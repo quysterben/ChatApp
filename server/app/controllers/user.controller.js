@@ -101,6 +101,28 @@ const authController = {
             }
             return next(err);
         }
+    },
+    getAllUser: async (req, res, next) => {
+        const userId = req.params.id;
+        try {
+            const users = await db.User.find({ _id: { $ne: userId } }).select([
+                "email",
+                "username",
+                "avatarImage",
+                "_id",
+            ]);
+
+            return res.status(200).json({
+                success: true,
+                message: 'Get users success.',
+                data: users,
+            })
+        } catch (err) {
+            if (!err.statusCode) {
+                err.statusCode = 500;
+            }
+            return next(err);
+        }
     }
 }
 

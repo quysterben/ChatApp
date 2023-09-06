@@ -1,0 +1,24 @@
+.container {
+    background-color: rgb(194, 194, 194);
+    height: 100vh;
+    position: relative;
+}
+
+.chatBox {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 1rem;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+    height: 85vh;
+    width: 85vw;
+    background-color: whitesmoke;
+    display: grid;
+    grid-template-columns: 25% 75%;
+
+    @media screen and (min-width: 720px) and (max-width: 1080px) {
+        grid-template-columns: 35% 65%;
+    }
+}
