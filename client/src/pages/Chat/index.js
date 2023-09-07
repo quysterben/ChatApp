@@ -3,9 +3,10 @@ import styles from './Chat.module.css'
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { getDataAPI } from '../../utils/fetchData';
-import Contacts from '../../components/Contacts';
-import Welcome from '../../components/Welcome';
+import { getDataAPI } from '../../utils/fetchData'
+import Contacts from '../../components/Contacts'
+import Welcome from '../../components/Welcome'
+import ChatContainer from '../../components/ChatContainer'
 
 export default function Chat() {
     const navigate = useNavigate();
@@ -55,7 +56,7 @@ export default function Chat() {
                 {!isLoading && currentChat === undefined ? (
                     <Welcome />
                 ) : (
-                    <div>Chat</div>
+                    <ChatContainer currentChat={currentChat} />
                 )}
             </div>
         </div>

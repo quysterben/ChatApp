@@ -1,0 +1,35 @@
+.container {
+    display: grid;
+    grid-template-rows: 10% 80% 10%;
+    gap: 0.1rem;
+    overflow: hidden;
+
+    @media screen and (min-width: 720px) and (max-width: 1080px) {
+        grid-template-rows: 15% 70% 15%;
+    }
+}
+
+.chatHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2rem;
+}
+
+.userDetail {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.avatar img {
+    height: 3rem;
+}
+
+.username {
+    display: inline-block;
+}
+
+.username h3 {
+    color: black;
+}
