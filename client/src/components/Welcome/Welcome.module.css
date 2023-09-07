@@ -4,10 +4,10 @@
     align-items: center;
     color: rgb(0, 0, 0);
     flex-direction: column;
+}
 
-    span {
-        color: #4e0eff;
-    }
+span {
+    color: #4e0eff;
 }
 
 .gif {
