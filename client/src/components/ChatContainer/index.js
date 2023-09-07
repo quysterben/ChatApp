@@ -2,11 +2,22 @@ import styles from './ChatContainer.module.css'
 
 import Logout from '../Logout'
 import ChatInput from '../ChatInput'
+import Messages from '../Messages'
 
-export default function ChatContainer({ currentChat }) {
+import { postDataAPI } from '../../utils/fetchData';
+
+export default function ChatContainer({ currentChat, currentUser }) {
     const handleSendMsg = async (msg) => {
-        console.log(msg);
-        alert(msg);
+        try {
+            const data = {
+                from: currentUser._id,
+                to: currentChat._id,
+                message: msg,
+            }
+            postDataAPI('message/addMsg', { data })
+        } catch (err) {
+            console.log(err);
+        }
     }
 
     return (
@@ -29,7 +40,7 @@ export default function ChatContainer({ currentChat }) {
                             </div>
                             <Logout />
                         </div>
-                        <div className={styles.chatMessages}></div>
+                        <Messages />
                         <ChatInput handleSendMsg={handleSendMsg} />
                     </div>
                 )
