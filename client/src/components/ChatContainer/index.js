@@ -1,12 +1,31 @@
 import styles from './ChatContainer.module.css'
 
+import { useState, useEffect } from 'react'
+
 import Logout from '../Logout'
 import ChatInput from '../ChatInput'
-import Messages from '../Messages'
 
 import { postDataAPI } from '../../utils/fetchData';
 
 export default function ChatContainer({ currentChat, currentUser }) {
+    const [messages, setMessages] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const currentUserData = await JSON.parse(
+                localStorage.getItem("chat-app-user")
+            );
+            const data = {
+                from: currentUserData._id,
+                to: currentChat._id
+            }
+            const res = await postDataAPI('message/getMsg', { data })
+            setMessages(res.data);
+        }
+
+        fetchData().catch(console.error);
+    }, [currentChat])
+
     const handleSendMsg = async (msg) => {
         try {
             const data = {
@@ -14,7 +33,7 @@ export default function ChatContainer({ currentChat, currentUser }) {
                 to: currentChat._id,
                 message: msg,
             }
-            postDataAPI('message/addMsg', { data })
+            await postDataAPI('message/addMsg', { data })
         } catch (err) {
             console.log(err);
         }
@@ -40,7 +59,19 @@ export default function ChatContainer({ currentChat, currentUser }) {
                             </div>
                             <Logout />
                         </div>
-                        <Messages />
+                        <div className={styles.chatMessages}>
+                            {
+                                messages.map(message => {
+                                    return (
+                                        <div className={message.fromSelf ? styles.sender : styles.received}>
+                                            <div className={styles.content}>
+                                                <p>{message.message}</p>
+                                            </div>
+                                        </div>
+                                    )
+                                })
+                            }
+                        </div>
                         <ChatInput handleSendMsg={handleSendMsg} />
                     </div>
                 )

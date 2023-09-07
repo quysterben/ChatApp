@@ -33,3 +33,48 @@
 .username h3 {
     color: black;
 }
+
+.chatMessages {
+    padding: 1rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    overflow: auto;
+}
+
+.chatMessages::-webkit-scrollbar {
+    width: 0.2rem;
+}
+
+.content {
+    max-width: 40%;
+    overflow-wrap: break-word;
+    padding: 1rem;
+    font-size: 1.1rem;
+    border-radius: 1rem;
+    color: black;
+
+    @media screen and (min-width: 720px) and (max-width: 1080px) {
+        max-width: 70%;
+    }
+}
+
+.sender {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.sender .content {
+    background-color: #4f04ff21;
+}
+
+.received {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.received .content {
+    background-color: #0d051220;
+}

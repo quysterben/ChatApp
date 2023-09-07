@@ -22,7 +22,30 @@ const authController = {
         }
     },
     getAllMessage: async (req, res, next) => {
-
+        try {
+            const { from, to } = req.body;
+            const messages = await db.Message.find({
+                users: {
+                    $all: [from, to],
+                }
+            }).sort({ updateAt: 1 });
+            const projectMessages = messages.map((msg) => {
+                return {
+                    fromSelf: msg.sender.toString() === from,
+                    message: msg.message.text,
+                };
+            });
+            return res.status(200).json({
+                success: true,
+                message: 'Get all messages successfully.',
+                data: projectMessages,
+            })
+        } catch (err) {
+            if (!err.statusCode) {
+                err.statusCode = 500;
+            }
+            return next(err);
+        }
     }
 }
 
