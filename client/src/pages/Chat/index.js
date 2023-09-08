@@ -1,15 +1,17 @@
 import styles from './Chat.module.css'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { io } from 'socket.io-client'
 
-import { getDataAPI } from '../../utils/fetchData'
+import { getDataAPI, BASEURL } from '../../utils/fetchData'
 import Contacts from '../../components/Contacts'
 import Welcome from '../../components/Welcome'
 import ChatContainer from '../../components/ChatContainer'
 
 export default function Chat() {
     const navigate = useNavigate();
+    const socket = useRef();
 
     const [currentUser, setCurrentUser] = useState(undefined);
     const [contacts, setContacts] = useState([]);
@@ -29,6 +31,13 @@ export default function Chat() {
 
         fetchData().catch(console.error);
     }, [navigate])
+
+    useEffect(() => {
+        if (currentUser) {
+            socket.current = io(BASEURL);
+            socket.current.emit("add-user", currentUser._id);
+        }
+    }, [currentUser])
 
     useEffect(() => {
         const fetchData = async () => {
@@ -56,7 +65,7 @@ export default function Chat() {
                 {!isLoading && currentChat === undefined ? (
                     <Welcome />
                 ) : (
-                    <ChatContainer currentChat={currentChat} currentUser={currentUser} />
+                    <ChatContainer currentChat={currentChat} currentUser={currentUser} socket={socket} />
                 )}
             </div>
         </div>

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const VERSION = 'v1';
-const BASEURL = 'http://localhost:5000';
+export const BASEURL = 'http://localhost:5000';
 
 export const getDataAPI = async (url, token) => {
     const res = await axios.get(`${BASEURL}/api/${VERSION}/${url}`, {

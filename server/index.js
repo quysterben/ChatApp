@@ -13,6 +13,7 @@ const cookieParser = require('cookie-parser');
 const db = require('./app/models');
 
 const app = express();
+const socket = require('socket.io');
 
 app.use(express.json());
 app.use(helmet());
@@ -50,6 +51,7 @@ app.get('/', (req, res) => {
 });
 
 const serverRoutes = require('./app/routes/routes');
+const { log } = require('console');
 app.use('/api/v1', serverRoutes);
 
 // handle error request
@@ -78,6 +80,32 @@ db.mongoose
 
 // set port, listen for requests
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}.`);
 });
+
+const io = socket(server, {
+    cors: {
+        origin: "http://localhost:3000",
+        credentials: true,
+    }
+});
+
+global.onlineUsers = new Map();
+
+io.on('connection', (socket) => {
+    global.chatSocket = socket;
+
+    socket.on("add-user", (userId) => {
+        console.log(userId);
+        onlineUsers.set(userId, socket.id);
+    });
+
+    socket.on('send-msg', (data) => {
+        const sendUserSocket = onlineUsers.get(data.to);
+        if (sendUserSocket) {
+            socket.to(sendUserSocket).emit('msg-receive', data.message);
+        }
+    })
+});
+

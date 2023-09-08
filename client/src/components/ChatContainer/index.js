@@ -1,14 +1,16 @@
 import styles from './ChatContainer.module.css'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 import Logout from '../Logout'
 import ChatInput from '../ChatInput'
 
 import { postDataAPI } from '../../utils/fetchData';
 
-export default function ChatContainer({ currentChat, currentUser }) {
+export default function ChatContainer({ currentChat, currentUser, socket }) {
     const [messages, setMessages] = useState([]);
+    const [arrivalMessage, setArrivalMessage] = useState(null);
+    const scrollRef = useRef();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -17,7 +19,7 @@ export default function ChatContainer({ currentChat, currentUser }) {
             );
             const data = {
                 from: currentUserData._id,
-                to: currentChat._id
+                to: currentChat?._id
             }
             const res = await postDataAPI('message/getMsg', { data })
             setMessages(res.data);
@@ -34,10 +36,34 @@ export default function ChatContainer({ currentChat, currentUser }) {
                 message: msg,
             }
             await postDataAPI('message/addMsg', { data })
+            socket.current.emit('send-msg', {
+                to: currentChat._id,
+                from: currentUser._id,
+                message: msg,
+            });
+            const msgs = [...messages];
+            msgs.push({ fromSelf: true, message: msg });
+            setMessages(msgs);
         } catch (err) {
             console.log(err);
         }
     }
+
+    useEffect(() => {
+        if (socket.current) {
+            socket.current.on("msg-receive", (msg) => {
+                setArrivalMessage({ fromSelf: false, message: msg })
+            });
+        }
+    }, [socket]);
+
+    useEffect(() => {
+        arrivalMessage && setMessages((prev) => [...prev, arrivalMessage]);
+    }, [arrivalMessage])
+
+    useEffect(() => {
+        scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [messages]);
 
     return (
         <>
@@ -61,9 +87,13 @@ export default function ChatContainer({ currentChat, currentUser }) {
                         </div>
                         <div className={styles.chatMessages}>
                             {
-                                messages.map(message => {
+                                messages.map((message, index) => {
                                     return (
-                                        <div className={message.fromSelf ? styles.sender : styles.received}>
+                                        <div
+                                            ref={scrollRef}
+                                            key={index}
+                                            className={message.fromSelf ? styles.sender : styles.received}
+                                        >
                                             <div className={styles.content}>
                                                 <p>{message.message}</p>
                                             </div>
