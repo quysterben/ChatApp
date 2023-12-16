@@ -10,6 +10,7 @@ public/node_modules/.bin/css-blank-pseudo
 public/node_modules/.bin/css-has-pseudo
 public/node_modules/.bin/css-prefers-color-scheme
 public/node_modules/.bin/cssesc
+load
 public/node_modules/.bin/detect
 public/node_modules/.bin/detect-port
 public/node_modules/.bin/ejs
